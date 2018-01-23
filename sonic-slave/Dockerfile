@@ -2,11 +2,18 @@ FROM debian:jessie
 
 MAINTAINER johnar@microsoft.com
 
-RUN echo "deb http://debian-archive.trafficmanager.net/debian/ jessie main contrib non-free" >> /etc/apt/sources.list && \
-        echo "deb-src http://debian-archive.trafficmanager.net/debian/ jessie main contrib non-free" >> /etc/apt/sources.list && \
-        echo "deb http://debian-archive.trafficmanager.net/debian-security/ jessie/updates main contrib non-free" >> /etc/apt/sources.list && \
-        echo "deb-src http://debian-archive.trafficmanager.net/debian-security/ jessie/updates main contrib non-free" >> /etc/apt/sources.list && \
-        echo 'deb http://debian-archive.trafficmanager.net/debian jessie-backports main' >> /etc/apt/sources.list
+COPY ["pip.conf", "/etc/"]
+
+RUN echo "deb http://mirrors.163.com/debian/ jessie main contrib non-free" > /etc/apt/sources.list 
+&& \
+        echo "deb-src http://mirrors.163.com/debian/ jessie main contrib non-free" >> /etc/apt/sour
+ces.list && \
+        echo "deb http://mirrors.163.com/debian-security/ jessie/updates main contrib non-free" >> 
+/etc/apt/sources.list && \
+        echo "deb-src http://mirrors.163.com/debian-security/ jessie/updates main contrib non-free"
+ >> /etc/apt/sources.list && \
+        echo 'deb http://mirrors.163.com/debian jessie-backports main' >> /etc/apt/sources.list
+
 
 ## Make apt-get non-interactive
 ENV DEBIAN_FRONTEND=noninteractive
@@ -223,9 +230,9 @@ RUN apt-get update && apt-get install -y \
 RUN apt-get -y build-dep linux
 
 # For gobgp build
+COPY go1.8.3.linux-amd64.tar.gz ./
 RUN export VERSION=1.8.3 \
- && wget https://storage.googleapis.com/golang/go$VERSION.linux-amd64.tar.gz \
- && tar -C /usr/local -xzf go$VERSION.linux-amd64.tar.gz \
+ && tar -C /usr/local -xzf ./go$VERSION.linux-amd64.tar.gz \
  && echo 'export GOROOT=/usr/local/go' >> /etc/bash.bashrc \
  && echo 'export PATH=$PATH:$GOROOT/bin' >> /etc/bash.bashrc
 
@@ -255,7 +262,8 @@ RUN mkdir /var/run/sshd
 EXPOSE 22
 
 # Install depot-tools (for git-retry)
-RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git /usr/share/depot_tools
+#RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git /usr/share/depot_tools
+COPY depot_tools /usr/share/depot_tools
 ENV PATH /usr/share/depot_tools:$PATH
 
 # Install docker engine 17.03.2~ce-0 inside docker and enable experimental feature

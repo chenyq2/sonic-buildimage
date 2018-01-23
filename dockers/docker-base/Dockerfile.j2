@@ -18,6 +18,7 @@ RUN rm -rf               \
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Configure data sources for apt/dpkg
+COPY ["pip.conf", "/etc/"]
 COPY ["sources.list", "/etc/apt/sources.list"]
 COPY ["dpkg_01_drop", "/etc/dpkg/dpkg.cfg.d/01_drop"]
 RUN apt-get update

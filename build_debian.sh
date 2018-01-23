@@ -68,7 +68,7 @@ touch $FILESYSTEM_ROOT/$PLATFORM_DIR/firsttime
 
 ## Build a basic Debian system by debootstrap
 echo '[INFO] Debootstrap...'
-sudo debootstrap --variant=minbase --arch amd64 jessie $FILESYSTEM_ROOT http://ftp.us.debian.org/debian
+sudo debootstrap --variant=minbase --arch amd64 jessie $FILESYSTEM_ROOT http://mirrors.aliyun.com/debian
 
 ## Config hostname and hosts, otherwise 'sudo ...' will complain 'sudo: unable to resolve host ...'
 sudo LANG=C chroot $FILESYSTEM_ROOT /bin/bash -c "echo '$HOSTNAME' > /etc/hostname"

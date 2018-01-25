@@ -1,0 +1,12 @@
+
+there are 2 Dockerfile in sonic-slave file.
+
+if you can't access google resource, please use Dockerfile.local, do it step by step:
+1, mv Dockerfile Dockerfile.remote
+2, mv Dockerfile.local Dockerfile
+3, cat xa* >> go1.8.3.linux-amd64.tar.gz
+4, cd depot
+5, cat xa* >> depot_tools.tar.gz 
+6, mv depot_tools.tar.gz ../
+7, tar xpzvf depot_tools.tar.gz 
+
